@@ -6,7 +6,7 @@
       </q-card-section>
 
       <q-card-section>
-        <q-form @submit="login" class="q-gutter-md">
+        <q-form @submit="login" class="q-gutter-md q-px-lg">
           <q-input
             filled
             v-model="email"
@@ -30,6 +30,7 @@
 
       <q-card-actions>
         <q-btn flat label="Don't have an account?" @click="goToSignup" />
+        {{ userStore.isAuthenticated }}
       </q-card-actions>
     </q-card>
   </q-page>
@@ -39,6 +40,8 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useUserStore } from "../stores/user";
+const userStore = useUserStore();
 
 const auth = getAuth(); // Initialize Firebase Auth directly
 const router = useRouter();

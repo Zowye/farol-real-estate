@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar>
+      <q-toolbar v-if="userStore.isAuthenticated">
         <q-btn
           flat
           dense
@@ -10,26 +10,24 @@
           aria-label="Menu"
           @click="toggleLeftDrawer"
         />
-
-        <q-toolbar-title> Quasar App </q-toolbar-title>
-
-        <div>
-          isAuthenticated {{ isAuthenticated }}
-          <p v-if="isAuthenticated">Welcome, {{ username }}!</p>
-          <p v-else>Please log in.</p>
-        </div>
+        Hello,
+        <q-badge class="q-mx-lg" color="white" text-color="black">{{
+          userStore.getEmail
+        }}</q-badge>
+        <q-btn
+          flat
+          dense
+          round
+          icon="logout"
+          aria-label="Logout"
+          @click="logout"
+        />
       </q-toolbar>
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
         <q-item-label header> Essential Links </q-item-label>
-
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
       </q-list>
     </q-drawer>
 
@@ -40,15 +38,29 @@
 </template>
 
 <script setup>
-import { defineComponent, ref, computed, onMounted } from "vue";
-import EssentialLink from "components/EssentialLink.vue";
+import { defineComponent, ref, computed } from "vue";
 import { useUserStore } from "../stores/user";
+import { getAuth, signOut } from "firebase/auth";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 const userStore = useUserStore();
 
-const isAuthenticated = computed(() => userStore.isAuthenticated);
-const username = computed(() => userStore.getUser);
+const leftDrawerOpen = ref(false);
 
-onMounted(() => {
-  console.log("mouted", userStore.getUser);
-});
+function toggleLeftDrawer() {
+  leftDrawerOpen.value = !leftDrawerOpen.value;
+}
+
+function logout() {
+  const auth = getAuth();
+  signOut(auth)
+    .then(() => {
+      userStore.clearUser();
+      router.push("/login");
+    })
+    .catch((error) => {
+      console.error("Erro ao fazer logout:", error);
+    });
+}
 </script>

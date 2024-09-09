@@ -6,7 +6,7 @@
       </q-card-section>
 
       <q-card-section>
-        <q-form @submit="signup" class="q-gutter-md">
+        <q-form @submit="signup" class="q-gutter-md q-px-lg">
           <q-input
             filled
             v-model="email"

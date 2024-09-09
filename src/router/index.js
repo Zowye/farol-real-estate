@@ -7,6 +7,7 @@ import {
 } from "vue-router";
 import routes from "./routes";
 import { getAuth } from "firebase/auth";
+import { useUserStore } from "../stores/user";
 
 export default route(function () {
   const createHistory = process.env.SERVER
@@ -22,11 +23,11 @@ export default route(function () {
   });
 
   Router.beforeEach((to, from, next) => {
-    const auth = getAuth();
-    const user = auth.currentUser;
-    console.log("Usersz?", user);
+    const userStore = useUserStore();
 
-    if (to.meta.needAuthentication && !user) {
+    const isAuthenticated = userStore.isAuthenticated;
+    console.log("isAuthenticatxxxxed", isAuthenticated);
+    if (to.meta.needAuthentication && !isAuthenticated) {
       next("/login");
     } else {
       next();
