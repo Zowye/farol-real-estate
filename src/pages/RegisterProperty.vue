@@ -81,8 +81,38 @@ import {
   uploadBytes,
   getDownloadURL,
 } from "firebase/storage";
+import { getDocs } from "firebase/firestore";
 import { getFirestore, doc, setDoc, onSnapshot } from "firebase/firestore";
 import { db } from "src/boot/firebase";
+
+const testProperty = {
+  description: "Teste de Firestore",
+  price: 100000,
+};
+
+// const testFirestore = async () => {
+//   try {
+//     const docRef = await addDoc(collection(db, "testCollection"), testProperty);
+//     console.log("Documento adicionado com ID:", docRef.id);
+//   } catch (error) {
+//     console.error("Erro ao adicionar documento de teste:", error);
+//   }
+// };
+
+const fetchTestCollection = async () => {
+  try {
+    const querySnapshot = await getDocs(collection(db, "teste"));
+    querySnapshot.forEach((doc) => {
+      console.log(`${doc.id} => `, doc.data());
+    });
+  } catch (error) {
+    console.error("Erro ao ler a coleção 'teste':", error);
+  }
+};
+
+fetchTestCollection();
+
+// testFirestore();
 
 const property = ref({
   description: "",
