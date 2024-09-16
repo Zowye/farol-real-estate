@@ -6,6 +6,7 @@ export function setupAuthListener() {
   const userStore = useUserStore();
 
   onAuthStateChanged(auth, (user) => {
+    console.log("onAuthStateChanged called", user);
     if (user) {
       userStore.setUser(user);
       const userEmail = user.providerData[0].email;

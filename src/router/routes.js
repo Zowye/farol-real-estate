@@ -8,6 +8,16 @@ const routes = [
         component: () => import("pages/IndexPage.vue"),
         meta: { needAuthentication: true },
       },
+      {
+        path: "/info",
+        component: () => import("pages/InfoPage.vue"),
+        meta: { needAuthentication: true },
+      },
+      {
+        path: "/register_property",
+        component: () => import("pages/RegisterProperty.vue"),
+        meta: { needAuthentication: true },
+      },
       { path: "login", component: () => import("pages/LoginPage.vue") },
       { path: "signup", component: () => import("pages/SignupPage.vue") },
     ],
